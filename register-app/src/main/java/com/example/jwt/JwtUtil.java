@@ -21,7 +21,7 @@ public class JwtUtil {
     private String jwtSecret;
 
     @Value("${jwt.expiration}")
-    private long jwtExpirationMs; // в миллисекундах
+    private long jwtExpirationMs;
 
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
@@ -31,7 +31,7 @@ public class JwtUtil {
                         .collect(Collectors.toList()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .signWith(SignatureAlgorithm.HS256, jwtSecret.getBytes())
                 .compact();
     }
 
